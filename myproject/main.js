@@ -52,16 +52,7 @@ Array(200).fill().forEach(addStar)
 const spaceTexture = new THREE.TextureLoader().load('space.avif');
 scene.background = spaceTexture;
 
-//Avatar
 
-const beidyTexture = new THREE.TextureLoader().load('beidy.jpg')
-const beidy = new THREE.Mesh(
-  new THREE.BoxGeometry(3,3,3),
-  new THREE.MeshBasicMaterial( { map: beidyTexture } )
-);
-scene.add(beidy)
-
-// Moon
 
 function animate() {
   requestAnimationFrame( animate );
@@ -74,5 +65,47 @@ function animate() {
   renderer.render( scene, camera);
 }
 
+//Avatar
 
+const beidyTexture = new THREE.TextureLoader().load('beidy.jpg')
+const beidy = new THREE.Mesh(
+  new THREE.BoxGeometry(3,3,3),
+  new THREE.MeshBasicMaterial( { map: beidyTexture } )
+);
+scene.add(beidy)
+
+// Moon
+
+const moonTexture = new THREE.TextureLoader().load('moon.jpg');
+const normalTexture = new THREE.TextureLoader().load('normal.jpg');
+
+const moon = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: moonTexture,
+    normalMap: normalTexture,
+  })
+);
+
+moon.position.z = 30;
+moon.position.setX(-10);
+
+scene.add(moon);
+
+
+function moveCamera(){
+  const t = document.body.getBoundingClientRect().top;
+  moon.rotation.x += 0.05;
+  moon.rotation.y += 0.075;
+  moon.rotation.z += 0.05;
+
+  moon.rotation.y += 0.01;
+  moon.rotation.z += 0.01;
+
+  camera.position.z = t * -0.01;
+  camera.position.x = t * -0.0002;
+  camera.position.y = t * -0.0002;
+}
+
+document.body.onscroll = moveCamera
 animate()
